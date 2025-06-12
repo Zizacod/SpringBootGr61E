@@ -1,4 +1,4 @@
-package de.ait.javalessons.springbootgr61e;
+package de.ait.javalessons;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,3 +11,4 @@ public class SpringBootGr61EApplication {
     }
 
 }
+
