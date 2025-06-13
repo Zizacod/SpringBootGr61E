@@ -65,9 +65,10 @@ public class RestApiBookController {
 
 
 
+
   @PostMapping
 public ResponseEntity<Book> postBook(@Valid @RequestBody Book book, BindingResult bindingResult) {
-    
+
     if (bindingResult.hasErrors()) {
         log.warn("Validation errors for book: {}", bindingResult.getAllErrors());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -84,6 +85,7 @@ public ResponseEntity<Book> postBook(@Valid @RequestBody Book book, BindingResul
         log.info("Book with id {} posted", book.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(book);
     }
+
 
 
 
@@ -112,11 +114,14 @@ public ResponseEntity<Book> postBook(@Valid @RequestBody Book book, BindingResul
     public ResponseEntity<Void> deleteBook(@PathVariable String id) {
         boolean removed = bookList.removeIf(book -> book.getId().equals(id));
         if (removed) {
-            log.info("Book with id {} deleted", id);
-        } else {
-            log.info("Book with id {} not found for deletion", id);
-        }
-        return ResponseEntity.ok().build();
+        log.info("Book with id {} deleted", id);
+        return ResponseEntity.ok().build();        
+    } else {
+        log.info("Book with id {} not found for deletion", id);
+        return ResponseEntity.notFound().build();  
+    }
+        
     }
 }
+
 
