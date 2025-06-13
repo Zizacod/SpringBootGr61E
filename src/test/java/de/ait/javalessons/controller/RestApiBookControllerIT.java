@@ -118,4 +118,92 @@ class RestApiBookControllerIT {
 
 
 
+
+@Test
+    void postBookWithInvalidDataShouldReturnBadRequest() throws Exception {
+        // Создаем книгу с невалидными данными
+        Book book = new Book("", "", "", -1);
+
+        var result = mockMvc.perform(post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void postBookWithDuplicateIdShouldReturnConflict() throws Exception {
+        // Создаем книгу с уже существующим ID
+        Book book = new Book("1", "Test Book", "Test Author", 2025);
+
+        var result = mockMvc.perform(post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
+    }
+
+
+
+
+
+    @Test
+    void putBookShouldUpdateExistingBook() throws Exception {
+        Book updatedBook = new Book("1", "Updated Title", "Updated Author", 2000);
+
+        var result = mockMvc.perform(put("/books/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedBook)))
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        Book bookFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
+        assertThat(bookFromResponse.getTitle()).isEqualTo("Updated Title");
+        assertThat(bookFromResponse.getAuthor()).isEqualTo("Updated Author");
+    }
+
+    @Test
+    void putBookShouldCreateNewBookIfNotExists() throws Exception {
+        Book newBook = new Book("999", "New Book", "New Author", 2025);
+
+        var result = mockMvc.perform(put("/books/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newBook)))
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
+
+        Book bookFromResponse = objectMapper.readValue(result.getResponse().getContentAsString(), Book.class);
+        assertThat(bookFromResponse.getId()).isEqualTo("999");
+        assertThat(bookFromResponse.getTitle()).isEqualTo("New Book");
+    }
+
+    @Test
+    void deleteBookWithNonExistentIdShouldReturnOk() throws Exception {
+        var result = mockMvc.perform(delete("/books/9999"))
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    void postBookWithMinimumValidDataShouldWork() throws Exception {
+        Book book = new Book("30", "T", "A", 1);
+
+        var result = mockMvc.perform(post("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andReturn();
+
+        assertThat(result.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+
+
+
+
+
 }
