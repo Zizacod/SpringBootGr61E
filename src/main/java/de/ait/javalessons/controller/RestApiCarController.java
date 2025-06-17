@@ -1,6 +1,8 @@
 package de.ait.javalessons.controller;
 
 import de.ait.javalessons.model.Car;
+import de.ait.javalessons.repository.CarRepository;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,12 @@ import java.util.Optional;
 @RequestMapping("/cars")
 public class RestApiCarController {
 
-    private List<Car> carList = new ArrayList<>();
+    private final CarRepository carRepository;
 
-    public RestApiCarController() {
-        carList.addAll(List.of(
+
+    public RestApiCarController(CarRepository carRepository) {
+        this.carRepository = carRepository;
+        this.carRepository.saveAll(List.of(
                 new Car("1", "Audi A4"),
                 new Car("2", "BMW M5"),
                 new Car("3", "Kia XCEED"),
@@ -40,40 +44,48 @@ public class RestApiCarController {
     @GetMapping
     public Iterable<Car> getCars() {
         log.info("Getting all cars");
-        return carList;
+        return carRepository.findAll();
     }
+
+
 
     @GetMapping("/{id}")
-    public Optional<Car> getCarById(@PathVariable String id) {
-        for (Car car : carList) {
-            if (car.getId().equals(id)) {
-                log.info("Car with id {} found", id);
-                return Optional.of(car);
-            }
+    public ResponseEntity<Car> getCarById(@PathVariable String id) {
+        Optional<Car> car = carRepository.findById(id);
+
+        if (car.isPresent()) {
+            log.info("Car with id {} found", id);
+            return ResponseEntity.status(HttpStatus.OK).body(car.get());
         }
-        log.info("Car with id {} not found", id);
-        return Optional.empty();
+
+        log.warn("Car with id {} not found", id);
+        return ResponseEntity.notFound().build();
     }
 
+
+
+
     @PostMapping
-    public Car postCar(@RequestBody Car car) {
-        carList.add(car);
-        log.info("Car with id {} posted", car.getId());
-        return car;
+    public ResponseEntity<Car> postCar(@Valid @RequestBody Car car) {
+        Car savedCar = carRepository.save(car);
+        log.info("Car with id {} posted", savedCar.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCar);
     }
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Car> putCar(@PathVariable String id, @RequestBody Car car) {
-        int carIndex = -1;
-        for (Car carInList : carList) {
-            if (carInList.getId().equals(id)) {
-                carIndex = carList.indexOf(carInList);
-                carList.set(carIndex, car);
-                log.info("Car with id {} updated", id);
-            }
+        if (carRepository.existsById(id)) {
+            Car carInDatabase = carRepository.findById(id).get();
+            car.setId(carInDatabase.getId());
+            car.setName(carInDatabase.getName());
+            Car savedCar = carRepository.save(car);
+            log.info("Car with id {} updated", id);
+            return new ResponseEntity<>(savedCar, HttpStatus.OK);
         }
-        return (carIndex == -1) ? new ResponseEntity<>(postCar(car), HttpStatus.CREATED)
-                : new ResponseEntity<>(car, HttpStatus.OK);
+        return postCar(car);
     }
 
  /*   @PutMapping("/{id}")
@@ -95,9 +107,11 @@ public ResponseEntity<Car> putCar(@PathVariable String id, @RequestBody Car car)
     return ResponseEntity.status(HttpStatus.CREATED).body(car);
 }*/
 
+
+
     @DeleteMapping("/{id}")
     public void deleteCar(@PathVariable String id) {
-        carList.removeIf(car -> car.getId().equals(id));
+        carRepository.deleteById(id);
         log.info("Car with id {} deleted", id);
     }
 
