@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="insert-demo-customers" author="Aziz Seidametov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="customers"/>
+        </preConditions>
+        <comment>Вставляем демонстрационные данные в таблицу customers (минимум 3 записи)</comment>
+
+        <insert tableName="customers">
+            <column name="id" valueNumeric="1"/>
+            <column name="full_name" value="Влад"/>
+            <column name="email" value="test1@gmail.com"/>
+        </insert>
+
+        <insert tableName="customers">
+            <column name="id" valueNumeric="2"/>
+            <column name="full_name" value="Евгений"/>
+            <column name="email" value="test2@gmail.com"/>
+        </insert>
+
+        <insert tableName="customers">
+            <column name="id" valueNumeric="3"/>
+            <column name="full_name" value="Арсен"/>
+            <column name="email" value="test3@gmail.com"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="customers">
+                <where>full_name='Влад'</where>
+            </delete>
+
+            <delete tableName="customers">
+                <where>full_name='Евгений'</where>
+            </delete>
+
+            <delete tableName="customers">
+                <where>full_name='Арсен'</where>
+            </delete>
+
+        </rollback>
+
+    </changeSet>
+</databaseChangeLog>
