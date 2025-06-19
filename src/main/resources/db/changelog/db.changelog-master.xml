@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+
+    <include file="db/changelog/create-users-table.xml"/>
+    <include file="db/changelog/add-age-column-to-user.xml"/>
+    <include file="db/changelog/insert-user-john-doe.xml"/>
+    <include file="db/changelog/modify-age-column-type.xml"/>
+    <include file="/db/changelog/add-unique-constraint-username.xml"/>
+    <include file="db/changelog/create-orders-table.xml"/>
+    <include file="db/changelog/drop-email-column.xml"/>
+</databaseChangeLog>
+
+

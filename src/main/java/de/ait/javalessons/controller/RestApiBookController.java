@@ -33,7 +33,7 @@ public class RestApiBookController {
 
     public RestApiBookController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.bookRepository.saveAll(List.of(new Book("1", "Война и мир", "Лев Толстой", 1869),
+       /* this.bookRepository.saveAll(List.of(new Book("1", "Война и мир", "Лев Толстой", 1869),
                 new Book("2", "Преступление и наказание", "Фёдор Достоевский", 1866),
                 new Book("3", "Мастер и Маргарита", "Михаил Булгаков", 1967),
                 new Book("4", "Анна Каренина", "Лев Толстой", 1877),
@@ -42,7 +42,7 @@ public class RestApiBookController {
                 new Book("7", "Мёртвые души", "Николай Гоголь", 1842),
                 new Book("8", "Отцы и дети", "Иван Тургенев", 1862),
                 new Book("9", "Доктор Живаго", "Борис Пастернак", 1957),
-                new Book("10", "Тихий Дон", "Михаил Шолохов", 1940)));
+                new Book("10", "Тихий Дон", "Михаил Шолохов", 1940)));*/
 
     }
 
