@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="insert-demo-products" author="Aziz Seidametov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="products"/>
+        </preConditions>
+        <comment>Вставляем демонстрационные данные в таблицу products (минимум 3 записи)</comment>
+
+       <insert tableName="products">
+           <column name="id" valueNumeric="1"/>
+           <column name="name" value="Бананы"/>
+           <column name="price" value="2.0"/>
+           <column name="description" value="зеленые бананы"/>
+       </insert>
+
+        <insert tableName="products">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="Персики"/>
+            <column name="price" value="1.5"/>
+            <column name="description" value="Персики сладкие"/>
+        </insert>
+
+        <insert tableName="products">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="Финики"/>
+            <column name="price" value="3.0"/>
+            <column name="description" value="Финики восточные"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="products">
+            <where>name='Бананы'</where>
+        </delete>
+
+        <delete tableName="products">
+            <where>name='Персики'</where>
+        </delete>
+
+        <delete tableName="products">
+            <where>name='Финики'</where>
+        </delete>
+
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>
+
+

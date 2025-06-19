@@ -11,9 +11,22 @@
     <include file="db/changelog/add-age-column-to-user.xml"/>
     <include file="db/changelog/insert-user-john-doe.xml"/>
     <include file="db/changelog/modify-age-column-type.xml"/>
-    <include file="/db/changelog/add-unique-constraint-username.xml"/>
-    <include file="db/changelog/create-orders-table.xml"/>
+    <include file="db/changelog/add-unique-constraint-username.xml"/>
     <include file="db/changelog/drop-email-column.xml"/>
+
+    <include file="db/changelog/1-create-products-table.xml"/>
+    <include file="db/changelog/2-create-customers-table.xml"/>
+    <include file="db/changelog/3-add-description-column-to-products.xml"/>
+    <include file="db/changelog/4-create-orders-table.xml"/>
+    <include file="db/changelog/5-insert-demo-products.xml"/>
+    <include file="db/changelog/6-insert-demo-customers.xml"/>
+    <include file="db/changelog/7-insert-demo-orders.xml"/>
+    <include file="db/changelog/8-add-notNull-constraint-products.xml"/>
+    <include file="db/changelog/9-delete-orders-if-empty.xml"/>
+    <include file="/db/changelog/10-create-unique-index-email-customers.xml"/>
+    <include file="db/changelog/11-modify-price-type-decimal-to-float.xml"/>
+    <include file="/db/changelog/12-rename-full_name-to-name-in-customers.xml"/>
+
 </databaseChangeLog>
 
 

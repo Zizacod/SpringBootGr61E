@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="insert-demo-orders" author="Aziz Seidametov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="orders"/>
+        </preConditions>
+        <comment>Вставляем демонстрационные данные в таблицу orders (минимум 2 записи).</comment>
+
+        <insert tableName="orders">
+            <column name="id" valueNumeric="1"/>
+            <column name="customer_id" valueNumeric="1"/>
+            <column name="order_date" valueDate="2024-01-15T10:00:00"/>
+        </insert>
+
+        <insert tableName="orders">
+            <column name="id" valueNumeric="2"/>
+            <column name="customer_id" valueNumeric="2"/>
+            <column name="order_date" valueDate="2024-01-16T11:00:00"/>
+        </insert>
+
+
+        <rollback>
+            <delete tableName="orders">
+                <where>customer_id='1'</where>
+            </delete>
+
+            <delete tableName="orders">
+                <where>customer_id='2'</where>
+            </delete>
+
+
+
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>
