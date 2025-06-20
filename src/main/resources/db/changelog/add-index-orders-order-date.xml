@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="add-index-orders-order-date" author="Igor Zimmermann">
+        <comment>Создаем индекс для столбца order_date в таблице orders</comment>
+        <sql>CREATE INDEX idx_orders_order_date ON orders_1 (order_date)</sql>
+        <rollback>
+            <sql>DROP INDEX idx_orders_order_date</sql>
+        </rollback>
+    </changeSet>
+
+
+
+</databaseChangeLog>

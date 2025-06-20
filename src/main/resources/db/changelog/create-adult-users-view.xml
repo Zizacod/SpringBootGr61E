@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+   <changeSet id="create-adult-users-view" author="Aziz Seidametov">
+       <comment>Создаем представление view для совершеннолетних пользователей</comment>
+       <createView viewName="adult_users">
+           SELECT * FROM users where age >= 18
+       </createView>
+
+       <rollback>
+           <dropView viewName="adult_users"/>
+       </rollback>
+
+   </changeSet>
+
+
+
+</databaseChangeLog>

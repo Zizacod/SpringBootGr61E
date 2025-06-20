@@ -6,20 +6,37 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="insert-user-john-doe" author="Aziz Seidametov">
+    <changeSet id="insert-different-users" author="Igor Zimmermann">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="users"/>
         </preConditions>
+
         <insert tableName="users">
             <column name="id" valueNumeric="1"/>
             <column name="username" value="john_doe"/>
             <column name="email" value="john_doe@gmail.com"/>
             <column name="age" valueNumeric="35"/>
         </insert>
+
+        <insert tableName="users">
+            <column name="id" valueNumeric="2"/>
+            <column name="username" value="jane_smith"/>
+            <column name="email" value="jane_smith@yahoo.com"/>
+            <column name="age" valueNumeric="28"/>
+        </insert>
+
+        <insert tableName="users">
+            <column name="id" valueNumeric="3"/>
+            <column name="username" value="max_power"/>
+            <column name="email" value="max.power@example.com"/>
+            <column name="age" valueNumeric="42"/>
+        </insert>
+
         <rollback>
             <delete tableName="users">
-                <where>username='john_doe'</where>
+                <where>username IN ('john_doe', 'jane_smith', 'max_power')</where>
             </delete>
         </rollback>
     </changeSet>
 </databaseChangeLog>
+
